@@ -40,7 +40,7 @@ namespace shobotter
                 timer1.Enabled = false;
                 webBrowser1.Visible = false;
                 int loc = code.IndexOf("<code>");
-                verifier =  code.Substring(loc, 13);
+                verifier = code.Substring(loc, 13);
                 verifier = verifier.Replace("<code>", "");
                 GetToken();
                 main();
@@ -92,7 +92,7 @@ namespace shobotter
             //ハードネーム
             if (cbHardName.Checked)
             {
-                BattInfo = BattInfo + tbHardName.Text + "\n";
+                BattInfo += tbHardName.Text + "\n";
             }
 
             //電源に接続されているか
@@ -101,13 +101,13 @@ namespace shobotter
                 switch (ps.PowerLineStatus)
                 {
                     case PowerLineStatus.Online:
-                        BattInfo = BattInfo + "ACに接続されています\n";
+                        BattInfo += "ACに接続されています\n";
                         break;
                     case PowerLineStatus.Offline:
-                        BattInfo = BattInfo + "バッテリーを使用しています\n";
+                        BattInfo += "バッテリーを使用しています\n";
                         break;
                     case PowerLineStatus.Unknown:
-                        BattInfo = BattInfo + "電源ステータスは不明です\n";
+                        BattInfo += "電源ステータスは不明です\n";
                         break;
                 }
             }
@@ -118,13 +118,13 @@ namespace shobotter
                 try
                 {
                     String strbattw = ps.BatteryLifePercent.ToString();
-                    double doublebattw = Convert.ToDouble(strbattw);
+                    double doublebattw = double.Parse(strbattw);
                     double doublebattper = doublebattw * 100;
-                    BattInfo = BattInfo + "バッテリー残量:" + doublebattper.ToString() + "%\n";
+                    BattInfo += "バッテリー残量:" + doublebattper.ToString() + "%\n";
                 }
                 catch
                 {
-                    BattInfo = BattInfo + "残量取得に失敗しました.\n";
+                    BattInfo += "残量取得に失敗しました.\n";
                 }
             }
 
@@ -134,27 +134,27 @@ namespace shobotter
                 switch (ps.BatteryChargeStatus)
                 {
                     case BatteryChargeStatus.High:
-                        BattInfo = BattInfo + "バッテリー残量は十分あります\n";
+                        BattInfo += "バッテリー残量は十分あります\n";
                         break;
                     case BatteryChargeStatus.Low:
-                        BattInfo = BattInfo + "バッテリー残量が少ないです\n";
+                        BattInfo += "バッテリー残量が少ないです\n";
                         break;
                     case BatteryChargeStatus.Critical:
-                        BattInfo = BattInfo + "バッテリー残量が少なすぎです\n";
+                        BattInfo += "バッテリー残量が少なすぎです\n";
                         break;
                     case BatteryChargeStatus.Charging:
-                        BattInfo = BattInfo + "充電中です\n";
+                        BattInfo += "充電中です\n";
                         break;
                     case BatteryChargeStatus.NoSystemBattery:
-                        BattInfo = BattInfo + "バッテリーを使用していません\n";
+                        BattInfo += "バッテリーを使用していません\n";
                         break;
                     case BatteryChargeStatus.Unknown:
-                        BattInfo = BattInfo + "バッテリー状態は不明です\n";
+                        BattInfo += "バッテリー状態は不明です\n";
                         break;
 
                 }
             }
-            if (!(BattInfo == BattInfo_old))
+            if (BattInfo != BattInfo_old)
             {
                 lblBattStatus.Text = BattInfo;
                 SendTweet(BattInfo + "\n\n#ShobonBattery");
@@ -164,13 +164,10 @@ namespace shobotter
 
         private void cbbatt_CheckedChanged(object sender, EventArgs e)
         {
+            timerbatt.Enabled = false
             if (cbbatt.Checked)
             {
                 timerbatt.Enabled = true;
-            }
-            else
-            {
-                timerbatt.Enabled = false;
             }
         }
 
@@ -180,8 +177,6 @@ namespace shobotter
             mainRe();
             ShowAuthWindowAndAuth();
         }
-
-
-
+        
     }
 }
